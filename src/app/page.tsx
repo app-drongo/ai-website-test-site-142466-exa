@@ -1,6 +1,7 @@
 'use client';
 
 import Hero from '@/components/sections/home/Hero';
+import About from '@/components/sections/home/About';
 import Pricing from '@/components/sections/home/Pricing';
 import Contact from '@/components/sections/home/Contact';
 import CallToAction from '@/components/sections/home/CallToAction';
@@ -95,14 +96,17 @@ export default function HomePage(props: PageProps) {
           imageAlt={config.heroImageAlt}
         />
       </section>
-      <section id="pricing" className="bg-muted/30 text-foreground">
+      <section id="about" className="bg-muted/30 text-foreground">
+        <About />
+      </section>
+      <section id="pricing" className="bg-background text-foreground">
         <Pricing
           title={config.pricingTitle}
           subtitle={config.pricingSubtitle}
           plans={config.pricingPlans}
         />
       </section>
-      <section id="contact" className="bg-background text-foreground">
+      <section id="contact" className="bg-muted/30 text-foreground">
         <Contact />
       </section>
       <section id="cta" className="bg-primary text-primary-foreground">

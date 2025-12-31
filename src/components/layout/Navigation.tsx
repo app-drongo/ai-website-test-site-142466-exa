@@ -9,12 +9,12 @@ const DEFAULT_NAVIGATION = {
   brand: 'Test Site',
   links: [
     { label: 'Home', href: '#hero' },
+    { label: 'About', href: '#about' },
     { label: 'Pricing', href: '#pricing' },
     { label: 'Contact', href: '#contact' },
-    { label: 'Get Started', href: '#cta' },
   ],
-  ctaText: 'Sign Up',
-  ctaHref: '/signup',
+  ctaText: 'Get Started',
+  ctaHref: '/get-started',
 } as const;
 
 type NavigationProps = Partial<typeof DEFAULT_NAVIGATION>;
@@ -48,7 +48,7 @@ export default function Navigation(props: NavigationProps) {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-background/95 backdrop-blur-sm border-b border-border shadow-sm'
+          ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-sm'
           : 'bg-transparent'
       }`}
     >
@@ -68,15 +68,15 @@ export default function Navigation(props: NavigationProps) {
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
-              {config.links.map((link, index) => (
+              {config.links.map((link, idx) => (
                 <button
-                  key={index}
+                  key={idx}
                   onClick={() => handleLinkClick(link.href)}
-                  data-editable-href={`links[${index}].href`}
+                  data-editable-href={`links[${idx}].href`}
                   data-href={link.href}
                   className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium transition-colors"
                 >
-                  <span data-editable={`links[${index}].label`}>{link.label}</span>
+                  <span data-editable={`links[${idx}].label`}>{link.label}</span>
                 </button>
               ))}
             </div>
@@ -110,16 +110,16 @@ export default function Navigation(props: NavigationProps) {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-sm border-t border-border">
-              {config.links.map((link, index) => (
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-md border-t border-border">
+              {config.links.map((link, idx) => (
                 <button
-                  key={index}
+                  key={idx}
                   onClick={() => handleLinkClick(link.href)}
-                  data-editable-href={`links[${index}].href`}
+                  data-editable-href={`links[${idx}].href`}
                   data-href={link.href}
                   className="text-foreground hover:text-primary block px-3 py-2 text-base font-medium w-full text-left transition-colors"
                 >
-                  <span data-editable={`links[${index}].label`}>{link.label}</span>
+                  <span data-editable={`links[${idx}].label`}>{link.label}</span>
                 </button>
               ))}
               <div className="pt-4">
