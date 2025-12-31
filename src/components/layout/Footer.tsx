@@ -1,34 +1,49 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { ArrowRight, Mail, Phone, MapPin } from 'lucide-react';
 import { useSmartNavigation } from '@/hooks/useSmartNavigation';
 
 const DEFAULT_FOOTER = {
   brand: 'Test Site',
-  description: 'Building the future with innovative technology solutions.',
-  quickLinks: [
-    { label: 'Home', href: '#hero' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'Contact', href: '/contact' },
+  description:
+    'Streamline operations and boost productivity with our comprehensive business solutions.',
+  ctaTitle: 'Ready to Get Started?',
+  ctaDescription: 'Join thousands of businesses already using our platform.',
+  ctaText: 'Start Free Trial',
+  ctaHref: '/signup',
+  contact: {
+    email: 'hello@testsite.com',
+    phone: '+1 (555) 123-4567',
+    address: '123 Business Ave, Suite 100',
+  },
+  links: [
+    {
+      title: 'Product',
+      items: [
+        { label: 'Features', href: '#hero' },
+        { label: 'Pricing', href: '#pricing' },
+        { label: 'Get Started', href: '#cta' },
+      ],
+    },
+    {
+      title: 'Company',
+      items: [
+        { label: 'About', href: '/about' },
+        { label: 'Contact', href: '/contact' },
+        { label: 'Support', href: '/support' },
+      ],
+    },
+    {
+      title: 'Legal',
+      items: [
+        { label: 'Privacy', href: '/privacy' },
+        { label: 'Terms', href: '/terms' },
+        { label: 'Security', href: '/security' },
+      ],
+    },
   ],
-  legalLinks: [
-    { label: 'Privacy Policy', href: '/privacy' },
-    { label: 'Terms of Service', href: '/terms' },
-  ],
-  socialLinks: [
-    { label: 'Twitter', href: 'https://twitter.com' },
-    { label: 'LinkedIn', href: 'https://linkedin.com' },
-    { label: 'GitHub', href: 'https://github.com' },
-  ],
-  contactEmail: 'hello@testsite.com',
-  contactPhone: '+1 (555) 123-4567',
-  address: '123 Business St, Suite 100, City, State 12345',
   copyright: '© 2024 Test Site. All rights reserved.',
-  newsletterTitle: 'Stay Updated',
-  newsletterDescription: 'Get the latest updates and insights delivered to your inbox.',
-  newsletterPlaceholder: 'Enter your email',
-  newsletterButtonText: 'Subscribe',
 } as const;
 
 type FooterProps = Partial<typeof DEFAULT_FOOTER>;
@@ -41,147 +56,99 @@ export default function Footer(props: FooterProps) {
     navigate(href);
   };
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Newsletter signup logic would go here
+  const handleCTAClick = () => {
+    navigate(config.ctaHref);
   };
 
   return (
-    <footer id="footer" className="bg-muted/30 border-t border-border">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid gap-12 lg:grid-cols-4 md:grid-cols-2">
-          {/* Brand & Description */}
-          <div className="lg:col-span-1">
-            <h3 className="text-xl font-bold text-foreground mb-4">
-              <span data-editable="brand">{config.brand}</span>
-            </h3>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-              <span data-editable="description">{config.description}</span>
+    <footer id="footer" className="bg-background text-foreground border-t border-border">
+      {/* Call to Action Section */}
+      <div className="bg-primary text-primary-foreground">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <span data-editable="ctaTitle">{config.ctaTitle}</span>
+            </h2>
+            <p className="text-lg text-primary-foreground/90 mb-8">
+              <span data-editable="ctaDescription">{config.ctaDescription}</span>
             </p>
-
-            {/* Social Links */}
-            <div className="flex gap-3">
-              {config.socialLinks.map((social, idx) => (
-                <Button
-                  key={idx}
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleLinkClick(social.href)}
-                  data-editable-href={`socialLinks[${idx}].href`}
-                  data-href={social.href}
-                  className="text-xs"
-                >
-                  <span data-editable={`socialLinks[${idx}].label`}>{social.label}</span>
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-6">Quick Links</h4>
-            <ul className="space-y-3">
-              {config.quickLinks.map((link, idx) => (
-                <li key={idx}>
-                  <button
-                    onClick={() => handleLinkClick(link.href)}
-                    data-editable-href={`quickLinks[${idx}].href`}
-                    data-href={link.href}
-                    className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200 text-left"
-                  >
-                    <span data-editable={`quickLinks[${idx}].label`}>{link.label}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-
-            <Separator className="my-6" />
-
-            <ul className="space-y-3">
-              {config.legalLinks.map((link, idx) => (
-                <li key={idx}>
-                  <button
-                    onClick={() => handleLinkClick(link.href)}
-                    data-editable-href={`legalLinks[${idx}].href`}
-                    data-href={link.href}
-                    className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200 text-left"
-                  >
-                    <span data-editable={`legalLinks[${idx}].label`}>{link.label}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Information */}
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-6">Contact</h4>
-            <div className="space-y-4 text-sm text-muted-foreground">
-              <div>
-                <p className="font-medium text-foreground mb-1">Email</p>
-                <p>
-                  <span data-editable="contactEmail">{config.contactEmail}</span>
-                </p>
-              </div>
-              <div>
-                <p className="font-medium text-foreground mb-1">Phone</p>
-                <p>
-                  <span data-editable="contactPhone">{config.contactPhone}</span>
-                </p>
-              </div>
-              <div>
-                <p className="font-medium text-foreground mb-1">Address</p>
-                <p className="leading-relaxed">
-                  <span data-editable="address">{config.address}</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Newsletter Signup */}
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-6">
-              <span data-editable="newsletterTitle">{config.newsletterTitle}</span>
-            </h4>
-            <p className="text-muted-foreground text-sm mb-4">
-              <span data-editable="newsletterDescription">{config.newsletterDescription}</span>
-            </p>
-            <form
-              onSubmit={handleNewsletterSubmit}
-              className="space-y-3"
-              data-form-id="69546fa6e59b404ee9698f6d"
+            <Button
+              onClick={handleCTAClick}
+              data-editable-href="ctaHref"
+              data-href={config.ctaHref}
+              size="lg"
+              className="bg-background text-foreground hover:bg-background/90 transition-colors"
             >
-              <input
-                type="email"
-                placeholder={config.newsletterPlaceholder}
-                className="w-full px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
-                required
-              />
-              <Button type="submit" size="sm" className="w-full">
-                <span data-editable="newsletterButtonText">{config.newsletterButtonText}</span>
-              </Button>
-            </form>
+              <span data-editable="ctaText">{config.ctaText}</span>
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Bar */}
-        <Separator className="my-8" />
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground text-center sm:text-left">
-            <span data-editable="copyright">{config.copyright}</span>
-          </p>
-          <div className="flex gap-6 text-xs text-muted-foreground">
-            {config.legalLinks.map((link, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleLinkClick(link.href)}
-                data-editable-href={`legalLinks[${idx}].href`}
-                data-href={link.href}
-                className="hover:text-primary transition-colors duration-200"
-              >
-                <span data-editable={`legalLinks[${idx}].label`}>{link.label}</span>
-              </button>
+      {/* Main Footer Content */}
+      <div className="bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
+            {/* Brand Section */}
+            <div className="lg:col-span-2">
+              <div className="mb-4">
+                <h3 className="text-lg font-bold text-foreground">
+                  <span data-editable="brand">{config.brand}</span>
+                </h3>
+              </div>
+              <p className="text-muted-foreground text-sm leading-relaxed max-w-md mb-6">
+                <span data-editable="description">{config.description}</span>
+              </p>
+
+              {/* Contact Info */}
+              <div className="space-y-3">
+                <div className="flex items-center text-sm text-muted-foreground">
+                  <Mail className="h-4 w-4 mr-2" />
+                  <span data-editable="contact.email">{config.contact.email}</span>
+                </div>
+                <div className="flex items-center text-sm text-muted-foreground">
+                  <Phone className="h-4 w-4 mr-2" />
+                  <span data-editable="contact.phone">{config.contact.phone}</span>
+                </div>
+                <div className="flex items-center text-sm text-muted-foreground">
+                  <MapPin className="h-4 w-4 mr-2" />
+                  <span data-editable="contact.address">{config.contact.address}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Links Sections */}
+            {config.links.map((section, sectionIndex) => (
+              <div key={sectionIndex}>
+                <h4 className="font-semibold text-foreground mb-4">
+                  <span data-editable={`links[${sectionIndex}].title`}>{section.title}</span>
+                </h4>
+                <ul className="space-y-2">
+                  {section.items.map((item, itemIndex) => (
+                    <li key={itemIndex}>
+                      <button
+                        onClick={() => handleLinkClick(item.href)}
+                        data-editable-href={`links[${sectionIndex}].items[${itemIndex}].href`}
+                        data-href={item.href}
+                        className="text-muted-foreground hover:text-foreground text-sm transition-colors text-left"
+                      >
+                        <span data-editable={`links[${sectionIndex}].items[${itemIndex}].label`}>
+                          {item.label}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
+          </div>
+
+          {/* Copyright */}
+          <div className="mt-12 pt-8 border-t border-border">
+            <p className="text-muted-foreground text-sm text-center">
+              <span data-editable="copyright">{config.copyright}</span>
+            </p>
           </div>
         </div>
       </div>

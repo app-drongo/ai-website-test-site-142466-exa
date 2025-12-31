@@ -2,26 +2,26 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ArrowRight } from 'lucide-react';
 import { useSmartNavigation } from '@/hooks/useSmartNavigation';
 
-const DEFAULT_NAV = {
+const DEFAULT_NAVIGATION = {
   brand: 'Test Site',
   links: [
     { label: 'Home', href: '#hero' },
-    { label: 'About', href: '#about' },
-    { label: 'Services', href: '#services' },
     { label: 'Pricing', href: '#pricing' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Get Started', href: '#cta' },
   ],
-  ctaText: 'Get Started',
-  ctaHref: '/start',
+  ctaText: 'Sign Up',
+  ctaHref: '/signup',
+  ctaSubtext: 'Start your journey today',
+  showCtaIcon: true,
 } as const;
 
-type NavigationProps = Partial<typeof DEFAULT_NAV>;
+type NavigationProps = Partial<typeof DEFAULT_NAVIGATION>;
 
 export default function Navigation(props: NavigationProps) {
-  const config = { ...DEFAULT_NAV, ...props };
+  const config = { ...DEFAULT_NAVIGATION, ...props };
   const navigate = useSmartNavigation();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -42,13 +42,15 @@ export default function Navigation(props: NavigationProps) {
 
   const handleCtaClick = () => {
     navigate(config.ctaHref);
+    setIsOpen(false);
   };
 
   return (
     <nav
+      id="navigation"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-sm'
+          ? 'bg-background/95 backdrop-blur-sm border-b border-border shadow-sm'
           : 'bg-transparent'
       }`}
     >
@@ -67,29 +69,38 @@ export default function Navigation(props: NavigationProps) {
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
-              {config.links.map((link, idx) => (
+              {config.links.map((link, index) => (
                 <button
-                  key={idx}
+                  key={index}
                   onClick={() => handleLinkClick(link.href)}
-                  data-editable-href={`links[${idx}].href`}
+                  data-editable-href={`links[${index}].href`}
                   data-href={link.href}
-                  className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-200"
+                  className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium transition-colors relative group"
                 >
-                  <span data-editable={`links[${idx}].label`}>{link.label}</span>
+                  <span data-editable={`links[${index}].label`}>{link.label}</span>
+                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></div>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Desktop CTA */}
-          <div className="hidden md:block">
+          {/* Enhanced Desktop CTA */}
+          <div className="hidden md:flex items-center space-x-4">
+            <div className="text-right">
+              <div className="text-xs text-muted-foreground">
+                <span data-editable="ctaSubtext">{config.ctaSubtext}</span>
+              </div>
+            </div>
             <Button
               onClick={handleCtaClick}
               data-editable-href="ctaHref"
               data-href={config.ctaHref}
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 hover:scale-105 group"
             >
               <span data-editable="ctaText">{config.ctaText}</span>
+              {config.showCtaIcon && (
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              )}
             </Button>
           </div>
 
@@ -99,36 +110,47 @@ export default function Navigation(props: NavigationProps) {
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
-              className="text-foreground hover:text-primary"
+              className="text-foreground hover:bg-accent"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Enhanced Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-md border-t border-border">
-              {config.links.map((link, idx) => (
+            <div className="px-2 pt-2 pb-6 space-y-1 bg-background/95 backdrop-blur-sm border-t border-border">
+              {config.links.map((link, index) => (
                 <button
-                  key={idx}
+                  key={index}
                   onClick={() => handleLinkClick(link.href)}
-                  data-editable-href={`links[${idx}].href`}
+                  data-editable-href={`links[${index}].href`}
                   data-href={link.href}
-                  className="text-foreground hover:text-primary block px-3 py-2 text-base font-medium w-full text-left transition-colors duration-200"
+                  className="text-foreground hover:text-primary hover:bg-accent/50 block px-3 py-3 text-base font-medium w-full text-left transition-all duration-200 rounded-md"
                 >
-                  <span data-editable={`links[${idx}].label`}>{link.label}</span>
+                  <span data-editable={`links[${index}].label`}>{link.label}</span>
                 </button>
               ))}
-              <div className="pt-2">
+
+              {/* Mobile CTA Section */}
+              <div className="pt-4 border-t border-border mt-4">
+                <div className="text-center mb-3">
+                  <div className="text-sm text-muted-foreground">
+                    <span data-editable="ctaSubtext">{config.ctaSubtext}</span>
+                  </div>
+                </div>
                 <Button
                   onClick={handleCtaClick}
                   data-editable-href="ctaHref"
                   data-href={config.ctaHref}
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 group"
+                  size="lg"
                 >
                   <span data-editable="ctaText">{config.ctaText}</span>
+                  {config.showCtaIcon && (
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  )}
                 </Button>
               </div>
             </div>
